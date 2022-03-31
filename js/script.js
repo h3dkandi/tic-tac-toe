@@ -22,3 +22,25 @@ const gameBoard = (() => {
         player2
     };
 })();
+
+const game = (() => {
+    let player1Turn = true;
+    const markBox = chosenBox => {
+        //prevent the player from choosing an already marked box
+        if (gameBoard.box[chosenBox] !== '') {
+            return;
+        }
+
+        if (player1Turn === true) {
+            gameBoard.box[chosenBox] = gameBoard.player1.marker;
+            player1Turn = false;
+        } else {
+            gameBoard.box[chosenBox] = gameBoard.player2.marker;
+            player1Turn = true;
+        }
+    };
+
+    return {
+        markBox,
+    };
+})();
