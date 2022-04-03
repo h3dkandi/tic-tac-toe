@@ -47,9 +47,13 @@ const game = (() => {
 
 const renderGameBoard = (() => {
     const boxes = document.querySelectorAll('.box');
-    gameBoard.boxContent.forEach((box, index) => {
+    const render = () => gameBoard.boxContent.forEach((box, index) => {
         if (box !== '') {
             boxes[index].textContent = box;
         }
-    })
+    });
+    
+    return {
+        render
+    }
 })();
