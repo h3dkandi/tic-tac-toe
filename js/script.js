@@ -40,20 +40,34 @@ const game = (() => {
         }
     };
 
+    const play = () => {
+        const gameBoardContainer = document.querySelector('.gameBoard');
+        gameBoardContainer.addEventListener('click', (e) => {
+            let chosenBox = e.target.id;
+            markBox(chosenBox);
+            renderGameBoard.render();
+        })
+    };
+
     return {
-        markBox,
+        play
     };
 })();
 
 const renderGameBoard = (() => {
     const boxes = document.querySelectorAll('.box');
-    const render = () => gameBoard.boxContent.forEach((box, index) => {
-        if (box !== '') {
-            boxes[index].textContent = box;
+    const render = () => gameBoard.boxContent.forEach((markedBox, index) => {
+        if (markedBox !== '') {
+            boxes[index].textContent = markedBox;
         }
     });
-    
+
     return {
         render
     }
 })();
+
+function init() {
+    game.play();
+}
+init();
