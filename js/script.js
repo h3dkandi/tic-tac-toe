@@ -71,10 +71,12 @@ const game = (() => {
     const play = () => {
         const gameBoardContainer = document.querySelector('.gameBoard');
         gameBoardContainer.addEventListener('click', (e) => {
-            let chosenBox = e.target.id;
-            markBox(chosenBox);
-            checkWinner();
-            renderGameBoard.render();
+            if (gameBoard.active === true) {
+                let chosenBox = e.target.id;
+                markBox(chosenBox);
+                checkWinner();
+                renderGameBoard.render();
+            };
         });
     };
 
