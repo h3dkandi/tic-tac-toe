@@ -10,67 +10,6 @@ const PlayerFactory = (name, marker) => {
     };
 };
 
-const game = (() => {
-    let player1Turn = true;
-    let active = true;
-    let moveCounter = 0;
-    let draw = false;
-
-    const markBox = chosenBox => {
-        //prevent the player from choosing an already marked box
-        if (gameBoard.boxContent[chosenBox] !== '') {
-            return;
-        }
-
-        moveCounter++;
-
-        if (player1Turn === true) {
-            gameBoard.boxContent[chosenBox] = gameBoard.player1.marker;
-            gameBoard.player1.moves.push(chosenBox);
-            player1Turn = false;
-        } else {
-            gameBoard.boxContent[chosenBox] = gameBoard.player2.marker;
-            gameBoard.player2.moves.push(chosenBox);
-            player1Turn = true;
-        }
-    };
-
-    const play = () => {
-        const gameBoardContainer = document.querySelector('.gameBoard');
-        gameBoardContainer.addEventListener('click', (e) => {
-            if (active === true) {
-                let chosenBox = e.target.id;
-                markBox(chosenBox);
-                checkWinner();
-                renderGameBoard.render();
-            };
-        });
-    };
-
-    const checkWinner = () => {
-        gameBoard.winConditions.forEach(condition => {
-            if (condition.every(move => gameBoard.player1.moves.includes(move))) {
-                gameBoard.player1.winner = true;
-                active = false;
-                console.log('plyaer 1 wins');
-            }
-            if (condition.every(move => gameBoard.player2.moves.includes(move))) {
-                gameBoard.player2.winner = true;
-                active = false;
-                console.log('player 2 wins');
-            }
-        })
-    }
-    //if all available moves are made and there is still no winner game is draw
-    if (moveCounter === 9) {
-        draw = true;
-    }
-
-    return {
-        play
-    };
-})();
-
 const gameBoard = (() => {
     const boxContent = [
         '', '', '',
@@ -91,14 +30,85 @@ const gameBoard = (() => {
 
     const player1 = PlayerFactory('ivan', 'X');
     const player2 = PlayerFactory('misho', 'O');
-
-    game.play();
+    
+    let player1Turn = true;
+    let endGame = false;
+    let moveCounter = 0;
+    const totalMoves = 9;
+    let draw = false;
 
     return {
         boxContent,
         winConditions,
         player1,
-        player2
+        player2,
+        player1Turn,
+        moveCounter,
+        draw,
+        endGame,
+        totalMoves
+    };
+})();
+
+const game = (() => {
+    const markBox = chosenBox => {
+        //prevent the player from choosing an already marked box
+        if (gameBoard.boxContent[chosenBox] !== '') {
+            return;
+        }
+
+        gameBoard.moveCounter++;
+
+        //if all available moves are made and there is still no winner game is draw
+        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner || !gameBoard.player2.winner)) {
+            gameBoard.draw = true;
+        }
+
+        if (gameBoard.player1Turn === true) {
+            gameBoard.boxContent[chosenBox] = gameBoard.player1.marker;
+            gameBoard.player1.moves.push(chosenBox);
+            gameBoard.player1Turn = false;
+        } else {
+            gameBoard.boxContent[chosenBox] = gameBoard.player2.marker;
+            gameBoard.player2.moves.push(chosenBox);
+            gameBoard.player1Turn = true;
+        }
+    };
+
+    const play = () => {
+        const gameBoardContainer = document.querySelector('.gameBoard');
+        gameBoardContainer.addEventListener('click', (e) => {
+            if (!gameBoard.endGame) {
+                let chosenBox = e.target.id;
+                markBox(chosenBox);
+                checkWinner();
+                checkGameEnd();
+                renderGameBoard.render();
+            };
+        });
+    };
+
+    const checkWinner = () => {
+        gameBoard.winConditions.forEach(condition => {
+            if (condition.every(move => gameBoard.player1.moves.includes(move))) {
+                gameBoard.player1.winner = true;
+                console.log('plyaer 1 wins');
+            }
+            if (condition.every(move => gameBoard.player2.moves.includes(move))) {
+                gameBoard.player2.winner = true;
+                console.log('player 2 wins');
+            }
+        })
+    }
+
+    const checkGameEnd = () => {
+        if (gameBoard.player1.winner || gameBoard.player2.winner || gameBoard.draw) {
+            gameBoard.endGame = true;
+        };
+    };
+
+    return {
+        play
     };
 })();
 
@@ -114,3 +124,8 @@ const renderGameBoard = (() => {
         render
     }
 })();
+
+function init() {
+    game.play();
+}
+init();
