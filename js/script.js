@@ -75,14 +75,6 @@ const game = (() => {
         }
     };
 
-    const play = (chosenBox) => {
-        if (!gameBoard.endGame) {
-            markBox(chosenBox);
-            checkWinner();
-            checkGameEnd();
-        };
-    };
-
     const checkWinner = () => {
         gameBoard.winConditions.forEach(condition => {
             if (condition.every(move => gameBoard.player1.moves.includes(move))) {
@@ -99,6 +91,14 @@ const game = (() => {
     const checkGameEnd = () => {
         if (gameBoard.player1.winner || gameBoard.player2.winner || gameBoard.draw) {
             gameBoard.endGame = true;
+        };
+    };
+
+    const play = (chosenBox) => {
+        if (!gameBoard.endGame) {
+            markBox(chosenBox);
+            checkWinner();
+            checkGameEnd();
         };
     };
 
