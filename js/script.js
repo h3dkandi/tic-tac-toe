@@ -59,11 +59,6 @@ const game = (() => {
 
         gameBoard.moveCounter++;
 
-        //if all available moves are made and there is still no winner game is draw
-        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner || !gameBoard.player2.winner)) {
-            gameBoard.draw = true;
-        }
-
         if (gameBoard.player1Turn === true) {
             gameBoard.boxContent[chosenBox] = gameBoard.player1.marker;
             gameBoard.player1.moves.push(chosenBox);
@@ -75,6 +70,13 @@ const game = (() => {
         }
     };
 
+    const checkDraw = () => {
+        //if all available moves are made and there is still no winner game is draw
+        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner || !gameBoard.player2.winner)) {
+            gameBoard.draw = true;
+        };
+    };
+    
     const checkWinner = () => {
         gameBoard.winConditions.forEach(condition => {
             if (condition.every(move => gameBoard.player1.moves.includes(move))) {
@@ -99,6 +101,7 @@ const game = (() => {
             markBox(chosenBox);
             checkWinner();
             checkGameEnd();
+            checkDraw();
         };
     };
 
