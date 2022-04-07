@@ -30,7 +30,7 @@ const gameBoard = (() => {
 
     const player1 = PlayerFactory('ivan', 'X');
     const player2 = PlayerFactory('misho', 'O');
-    
+
     let player1Turn = true;
     let endGame = false;
     let moveCounter = 0;
@@ -75,17 +75,12 @@ const game = (() => {
         }
     };
 
-    const play = () => {
-        const gameBoardContainer = document.querySelector('.gameBoard');
-        gameBoardContainer.addEventListener('click', (e) => {
-            if (!gameBoard.endGame) {
-                let chosenBox = e.target.id;
-                markBox(chosenBox);
-                checkWinner();
-                checkGameEnd();
-                renderGameBoard.render();
-            };
-        });
+    const play = (chosenBox) => {
+        if (!gameBoard.endGame) {
+            markBox(chosenBox);
+            checkWinner();
+            checkGameEnd();
+        };
     };
 
     const checkWinner = () => {
@@ -112,13 +107,27 @@ const game = (() => {
     };
 })();
 
-const renderGameBoard = (() => {
-    const boxes = document.querySelectorAll('.box');
-    const render = () => gameBoard.boxContent.forEach((markedBox, index) => {
-        if (markedBox !== '') {
-            boxes[index].textContent = markedBox;
-        }
-    });
+const gameUI = (() => {
+    const initBoxes = (gameBoardContainer) => {
+        gameBoardContainer.addEventListener('click', (e) => {
+            let chosenBox = e.target.id;
+            game.play(chosenBox);
+            populateGameBoard();
+        });
+    };
+
+    const populateGameBoard = () => {
+        const boxes = document.querySelectorAll('.box');
+        gameBoard.boxContent.forEach((markedBox, index) => {
+            if (markedBox !== '') {
+                boxes[index].textContent = markedBox;
+            };
+        });
+    };
+
+    const render = (gameBoardContainer) => {
+        initBoxes(gameBoardContainer);
+    }
 
     return {
         render
@@ -126,6 +135,7 @@ const renderGameBoard = (() => {
 })();
 
 function init() {
-    game.play();
+    const gameBoardContainer = document.querySelector('.gameBoard');
+    gameUI.render(gameBoardContainer);
 }
 init();
