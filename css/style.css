@@ -35,4 +35,6 @@ header {
     justify-content: center;
     height: 7rem;
     border: 1px solid orange;
+    user-select: none;
+    cursor: pointer;
 }
