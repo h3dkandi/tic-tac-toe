@@ -21,12 +21,28 @@ header {
     text-align: center;
 }
 
+.gameboard-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+    'game-status game-status game-status'
+    'player1 gameboard player2'
+    'player1 game-controls player2';
+}
+
+.game-status {
+    grid-area: game-status;
+    display: flex;
+    justify-content: center;
+}
+
 .gameBoard {
     border: 1px solid red;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 21rem;
     height: 21rem;
+    grid-area: gameboard;
 }
 
 .box {
@@ -37,4 +53,16 @@ header {
     border: 1px solid orange;
     user-select: none;
     cursor: pointer;
+}
+
+.player1 {
+    grid-area: player1;
+}
+
+.player2 {
+    grid-area: player2;
+}
+
+.game-controls {
+    grid-area: game-controls;
 }
