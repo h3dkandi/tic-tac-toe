@@ -28,8 +28,8 @@ const gameBoard = (() => {
         ['2', '4', '6']
     ]
 
-    const player1 = PlayerFactory('ivan', 'X');
-    const player2 = PlayerFactory('misho', 'O');
+    const player1 = PlayerFactory('Player 1', 'X');
+    const player2 = PlayerFactory('Player 2', 'O');
 
     let player1Turn = true;
     let endGame = false;
@@ -76,7 +76,7 @@ const game = (() => {
             gameBoard.draw = true;
         };
     };
-    
+
     const checkWinner = () => {
         gameBoard.winConditions.forEach(condition => {
             if (condition.every(move => gameBoard.player1.moves.includes(move))) {
@@ -128,8 +128,34 @@ const gameUI = (() => {
         });
     };
 
+    const initChangeNameBtns = () => {
+        const player1LabelName = document.querySelector('div.player1 label');
+        const player2LabelName = document.querySelector('div.player2 label');
+        const changePlayer1NameBtn = document.querySelector('div.player1 input[type="button"]');
+        const changePlayer2NameBtn = document.querySelector('div.player2 input[type="button"]');
+
+        changePlayer1NameBtn.addEventListener('click', (e) => {
+            const nameTextField = document.getElementById('player1-name');
+            if (nameTextField.value !== '') {
+                player1LabelName.textContent = nameTextField.value;
+                gameBoard.player1.name = player1LabelName.textContent;
+                nameTextField.value = '';
+            };
+        });
+
+        changePlayer2NameBtn.addEventListener('click', (e) => {
+            const nameTextField = document.getElementById('player2-name');
+            if (nameTextField.value !== '') {
+                player2LabelName.textContent = nameTextField.value;
+                gameBoard.player2.name = player2LabelName.textContent;
+                nameTextField.value = '';
+            };
+        });
+    };
+
     const render = (gameBoardContainer) => {
         initMarkBoxes(gameBoardContainer);
+        initChangeNameBtns();
     }
 
     return {
