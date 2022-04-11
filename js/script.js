@@ -111,7 +111,7 @@ const game = (() => {
 })();
 
 const gameUI = (() => {
-    const initBoxes = (gameBoardContainer) => {
+    const initMarkBoxes = (gameBoardContainer) => {
         gameBoardContainer.addEventListener('click', (e) => {
             let chosenBox = e.target.id;
             game.play(chosenBox);
@@ -129,7 +129,7 @@ const gameUI = (() => {
     };
 
     const render = (gameBoardContainer) => {
-        initBoxes(gameBoardContainer);
+        initMarkBoxes(gameBoardContainer);
     }
 
     return {
