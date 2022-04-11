@@ -23,6 +23,7 @@ header {
 
 .gameboard-wrapper {
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
     'game-status game-status game-status'
@@ -53,6 +54,10 @@ header {
     border: 1px solid orange;
     user-select: none;
     cursor: pointer;
+}
+
+.players {
+    width: 10.5rem;
 }
 
 .player1 {
