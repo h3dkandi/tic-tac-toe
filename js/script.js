@@ -131,25 +131,28 @@ const gameUI = (() => {
     const initChangeNameBtns = () => {
         const player1LabelName = document.querySelector('div.player1 label');
         const player2LabelName = document.querySelector('div.player2 label');
-        const changePlayer1NameBtn = document.querySelector('div.player1 input[type="button"]');
-        const changePlayer2NameBtn = document.querySelector('div.player2 input[type="button"]');
+        const changeNameBtns = document.querySelectorAll('div.players input[type="button"]');
 
-        changePlayer1NameBtn.addEventListener('click', (e) => {
-            const nameTextField = document.getElementById('player1-name');
-            if (nameTextField.value !== '') {
-                player1LabelName.textContent = nameTextField.value;
-                gameBoard.player1.name = player1LabelName.textContent;
-                nameTextField.value = '';
-            };
-        });
-
-        changePlayer2NameBtn.addEventListener('click', (e) => {
-            const nameTextField = document.getElementById('player2-name');
-            if (nameTextField.value !== '') {
-                player2LabelName.textContent = nameTextField.value;
-                gameBoard.player2.name = player2LabelName.textContent;
-                nameTextField.value = '';
-            };
+        changeNameBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if (e.target.id === 'p1-name-btn') {
+                    const nameTextField = document.getElementById('player1-name');
+                    if (nameTextField.value !== '') {
+                        player1LabelName.textContent = nameTextField.value;
+                        gameBoard.player1.name = player1LabelName.textContent;
+                        nameTextField.value = '';
+                    };
+                };
+                
+                if (e.target.id === 'p2-name-btn') {
+                    const nameTextField = document.getElementById('player2-name');
+                    if (nameTextField.value !== '') {
+                        player2LabelName.textContent = nameTextField.value;
+                        gameBoard.player2.name = player2LabelName.textContent;
+                        nameTextField.value = '';
+                    };
+                };
+            });
         });
     };
 
