@@ -129,13 +129,12 @@ const gameUI = (() => {
     };
 
     const initChangeNameBtns = () => {
-        const player1LabelName = document.querySelector('div.player1 label');
-        const player2LabelName = document.querySelector('div.player2 label');
         const changeNameBtns = document.querySelectorAll('div.players input[type="button"]');
 
         changeNameBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (e.target.id === 'p1-name-btn') {
+                    const player1LabelName = document.querySelector('div.player1 label');
                     const nameTextField = document.getElementById('player1-name');
                     if (nameTextField.value !== '') {
                         player1LabelName.textContent = nameTextField.value;
@@ -143,8 +142,9 @@ const gameUI = (() => {
                         nameTextField.value = '';
                     };
                 };
-                
+
                 if (e.target.id === 'p2-name-btn') {
+                    const player2LabelName = document.querySelector('div.player2 label');
                     const nameTextField = document.getElementById('player2-name');
                     if (nameTextField.value !== '') {
                         player2LabelName.textContent = nameTextField.value;
