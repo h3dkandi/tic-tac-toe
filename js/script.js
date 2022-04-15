@@ -134,21 +134,21 @@ const gameUI = (() => {
         changeNameBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (e.target.id === 'p1-name-btn') {
-                    const player1LabelName = document.querySelector('div.player1 label');
+                    const p1NameLabel = document.querySelector('div.player1 label');
                     const nameTextField = document.getElementById('player1-name');
                     if (nameTextField.value !== '') {
-                        player1LabelName.textContent = nameTextField.value;
-                        gameBoard.player1.name = player1LabelName.textContent;
+                        p1NameLabel.textContent = nameTextField.value;
+                        gameBoard.player1.name = p1NameLabel.textContent;
                         nameTextField.value = '';
                     };
                 };
 
                 if (e.target.id === 'p2-name-btn') {
-                    const player2LabelName = document.querySelector('div.player2 label');
+                    const p2NameLabel = document.querySelector('div.player2 label');
                     const nameTextField = document.getElementById('player2-name');
                     if (nameTextField.value !== '') {
-                        player2LabelName.textContent = nameTextField.value;
-                        gameBoard.player2.name = player2LabelName.textContent;
+                        p2NameLabel.textContent = nameTextField.value;
+                        gameBoard.player2.name = p2NameLabel.textContent;
                         nameTextField.value = '';
                     };
                 };
