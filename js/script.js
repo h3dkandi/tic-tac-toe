@@ -74,6 +74,7 @@ const game = (() => {
         //if all available moves are made and there is still no winner game is draw
         if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner || !gameBoard.player2.winner)) {
             gameBoard.draw = true;
+            gameBoard.endGame = true;
         };
     };
 
@@ -126,6 +127,7 @@ const gameUI = (() => {
                 boxes[index].textContent = markedBox;
             };
         });
+        populateGameStatus();
     };
 
     const initChangeNameBtns = () => {
@@ -152,8 +154,32 @@ const gameUI = (() => {
                         nameTextField.value = '';
                     };
                 };
+                //if Player's name is changed, change the game status default Player 1 name text to the changed name
+                populateGameStatus();
             });
         });
+    };
+
+    const populateGameStatus = () => {
+        const p1name = gameBoard.player1.name;
+        const p2name = gameBoard.player2.name;
+        const status = document.querySelector('.game-status');
+        if (gameBoard.endGame) {
+            if (gameBoard.draw) {
+                status.textContent = 'Game is Draw';
+            } else if (gameBoard.player1.winner) {
+                status.textContent = `${p1name} is the winner`;
+            } else if (gameBoard.player2.winner) {
+                status.textContent = `${p2name} is the winner`;
+            }
+            return;
+        };
+
+        if (gameBoard.player1Turn) {
+            status.textContent = `${p1name}'s turn`;
+        } else {
+            status.textContent = `${p2name}'s turn`;
+        };
     };
 
     const render = (gameBoardContainer) => {
