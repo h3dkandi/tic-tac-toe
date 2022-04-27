@@ -37,6 +37,13 @@ const gameBoard = (() => {
     const totalMoves = 9;
     let draw = false;
 
+    const resetPlayers = () => {
+        player1.moves = [];
+        player2.moves = [];
+        player1.winner = false;
+        player2.winner = false;
+    };
+
     return {
         boxContent,
         winConditions,
@@ -46,7 +53,8 @@ const gameBoard = (() => {
         moveCounter,
         draw,
         endGame,
-        totalMoves
+        totalMoves,
+        resetPlayers
     };
 })();
 
@@ -106,8 +114,23 @@ const game = (() => {
         };
     };
 
+    const resetGameboard = () => {
+        gameBoard.player1Turn = true;
+        gameBoard.endGame = false;
+        gameBoard.moveCounter = 0;
+        gameBoard. draw = false;
+        gameBoard.resetPlayers();
+        gameBoard.boxContent.fill('');
+    };
+
+    const newGame = () => {
+        resetGameboard();
+        gameUI.resetGameBoardUI();
+    };
+
     return {
-        play
+        play,
+        newGame //call this function on the html element button onclick
     };
 })();
 
@@ -128,6 +151,16 @@ const gameUI = (() => {
             };
         });
         populateGameStatus();
+    };
+
+    const resetGameBoardUI = () => {
+        const status = document.querySelector('.game-status');
+        status.textContent = 'New game started.';
+
+        const boxes = document.querySelectorAll('.box');
+        boxes.forEach(box => {
+            box.textContent = '';
+        });
     };
 
     const initChangeNameBtns = () => {
@@ -176,7 +209,7 @@ const gameUI = (() => {
         };
 
         if (gameBoard.player1Turn) {
-            status.textContent = `${p1name}'s turn`;
+            status.textContent = `${p1name}'s turn.`;
         } else {
             status.textContent = `${p2name}'s turn`;
         };
@@ -188,7 +221,8 @@ const gameUI = (() => {
     }
 
     return {
-        render
+        render,
+        resetGameBoardUI
     }
 })();
 
