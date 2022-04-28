@@ -1,3 +1,9 @@
+:root {
+    --main-color: rgb(82, 157, 35);
+    --white: rgb(255, 255, 255);
+    --box-shadow: 2px 4px 6px -3px rgb(0, 0, 0);
+}
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -104,4 +110,18 @@ header {
 /*--- GAME CONTROLS ---*/
 .game-controls {
     grid-area: game-controls;
+}
+
+button.new-game {
+    padding: 0.8rem 1.5rem 0.8rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: var(--white);
+    font-weight: bold;
+}
+
+button.new-game:hover {
+    box-shadow: var(--box-shadow);
 }
