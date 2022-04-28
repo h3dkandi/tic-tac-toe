@@ -39,7 +39,6 @@ header {
 }
 
 .gameBoard {
-    border: 1px solid red;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 21rem;
@@ -52,7 +51,7 @@ header {
     align-items: center;
     justify-content: center;
     height: 7rem;
-    border: 1px solid orange;
+    border: 0.1rem solid orange;
     user-select: none;
     cursor: pointer;
 }
