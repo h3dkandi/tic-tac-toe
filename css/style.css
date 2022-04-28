@@ -51,9 +51,16 @@ header {
     align-items: center;
     justify-content: center;
     height: 7rem;
-    border: 0.1rem solid orange;
     user-select: none;
     cursor: pointer;
+}
+
+.box.r {
+    border-right: 0.2rem solid orange;
+}
+
+.box.b {
+    border-bottom: 0.2rem solid orange;
 }
 
 .players {
