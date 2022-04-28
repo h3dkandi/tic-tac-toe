@@ -80,7 +80,7 @@ const game = (() => {
 
     const checkDraw = () => {
         //if all available moves are made and there is still no winner game is draw
-        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner || !gameBoard.player2.winner)) {
+        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner && !gameBoard.player2.winner)) {
             gameBoard.draw = true;
             gameBoard.endGame = true;
         };
