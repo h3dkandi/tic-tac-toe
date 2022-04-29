@@ -27,15 +27,21 @@ header {
     text-align: center;
 }
 
+/*--- GAMEBOARD ---*/
 .gameboard-wrapper {
     display: grid;
     justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
+    'game-mode game-mode game-mode'
     'game-status game-status game-status'
-    'player1 gameboard player2'
-    'player1 game-controls player2';
+    'left-side gameboard right-side'
+    'left-side game-controls right-side';
     gap: 1rem;
+}
+
+.game-mode {
+    grid-area: game-mode;
 }
 
 .game-status {
@@ -70,7 +76,6 @@ header {
 }
 
 /*--- PLAYERS STYLES ---*/
-
 .players {
     width: 10.5rem;
     display: flex;
@@ -79,11 +84,22 @@ header {
 }
 
 .player1 {
-    grid-area: player1;
+    grid-area: left-side;
 }
 
 .player2 {
-    grid-area: player2;
+    grid-area: right-side;
+}
+
+.computer {
+    grid-area: right-side;
+    display: none;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.computer span {
+    align-self: center;
 }
 
 .player1 label,
