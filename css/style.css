@@ -2,6 +2,7 @@
     --main-color: rgb(82, 157, 35);
     --white: rgb(255, 255, 255);
     --box-shadow: 2px 4px 6px -3px rgb(0, 0, 0);
+    --orange: rgb(255, 140, 0);
 }
 
 * {
@@ -42,6 +43,16 @@ header {
 
 .game-mode {
     grid-area: game-mode;
+}
+
+button.mode {
+    padding: 0.8rem 1.5rem 0.8rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--orange);
+    color: var(--white);
+    font-weight: bold;
 }
 
 .game-status {
