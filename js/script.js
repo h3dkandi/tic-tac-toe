@@ -65,6 +65,10 @@ const gameBoard = (() => {
 })();
 
 const game = (() => {
+    const modeSwitch = () => {
+        gameBoard.playVsComputer = !gameBoard.playVsComputer;
+    };
+
     const markBox = chosenBox => {
         //prevent the player from choosing an already marked box
         if (gameBoard.boxContent[chosenBox] !== '') {
@@ -162,6 +166,7 @@ const game = (() => {
 
     return {
         play,
+        modeSwitch,
         newGame //call this function on the html element button onclick
     };
 })();
@@ -249,6 +254,21 @@ const gameUI = (() => {
         };
     };
 
+    const switchUImode = () => {
+        const switchModeBtn = document.querySelector('.mode');
+        const player2panel = document.querySelector('.player2');
+        const computerPanel = document.querySelector('.computer')
+        if (gameBoard.playVsComputer === false) {
+            switchModeBtn.textContent = 'Play vs Computer';
+            player2panel.style.display = 'block';
+            computerPanel.style.display = 'none';
+        } else {
+            switchModeBtn.textContent = 'Play 1 vs 1';
+            player2panel.style.display = 'none';
+            computerPanel.style.display = 'block';
+        };
+    };
+
     const render = (gameBoardContainer) => {
         initMarkBoxes(gameBoardContainer);
         initChangeNameBtns();
@@ -256,7 +276,8 @@ const gameUI = (() => {
 
     return {
         render,
-        resetGameBoardUI
+        resetGameBoardUI,
+        switchUImode
     }
 })();
 
