@@ -30,7 +30,9 @@ const gameBoard = (() => {
 
     const player1 = PlayerFactory('Player 1', 'X');
     const player2 = PlayerFactory('Player 2', 'O');
+    const computer = PlayerFactory('Computer', 'O')
 
+    let playVsComputer = false;
     let player1Turn = true;
     let endGame = false;
     let moveCounter = 0;
@@ -42,6 +44,8 @@ const gameBoard = (() => {
         player2.moves = [];
         player1.winner = false;
         player2.winner = false;
+        computer.moves = [];
+        computer.winner = false;
     };
 
     return {
@@ -49,6 +53,8 @@ const gameBoard = (() => {
         winConditions,
         player1,
         player2,
+        computer,
+        playVsComputer,
         player1Turn,
         moveCounter,
         draw,
@@ -65,9 +71,7 @@ const game = (() => {
             return;
         }
 
-        gameBoard.moveCounter++;
-
-        if (gameBoard.player1Turn === true) {
+        if (gameBoard.player1Turn === true && !gameBoard.playVsComputer) {
             gameBoard.boxContent[chosenBox] = gameBoard.player1.marker;
             gameBoard.player1.moves.push(chosenBox);
             gameBoard.player1Turn = false;
@@ -75,12 +79,38 @@ const game = (() => {
             gameBoard.boxContent[chosenBox] = gameBoard.player2.marker;
             gameBoard.player2.moves.push(chosenBox);
             gameBoard.player1Turn = true;
+        };
+
+        if (gameBoard.playVsComputer) {
+            gameBoard.boxContent[chosenBox] = gameBoard.player1.marker;
+            gameBoard.player1.moves.push(chosenBox);
+            gameBoard.computer.moves.push(computerMarkBox());
         }
+    };
+
+    const countMoves = () => {
+        if (!gameBoard.playVsComputer) {
+            gameBoard.moveCounter = gameBoard.player1.moves.length + gameBoard.player2.moves.length;
+        } else {
+            gameBoard.moveCounter = gameBoard.player1.moves.length + gameBoard.computer.moves.length;
+        };
+    };
+
+    const computerMarkBox = () => {
+        let freeBoxes = [];
+        gameBoard.boxContent.forEach((box, index) => {
+            if (box === '') {
+                freeBoxes.push(index);
+            };
+        });
+        let computerChoice = freeBoxes[Math.floor(Math.random() * freeBoxes.length)];
+        gameBoard.boxContent[computerChoice] = gameBoard.computer.marker;
+        return computerChoice.toString();
     };
 
     const checkDraw = () => {
         //if all available moves are made and there is still no winner game is draw
-        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner && !gameBoard.player2.winner)) {
+        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner && !gameBoard.player2.winner && !gameBoard.computer.winner)) {
             gameBoard.draw = true;
             gameBoard.endGame = true;
         };
@@ -90,17 +120,18 @@ const game = (() => {
         gameBoard.winConditions.forEach(condition => {
             if (condition.every(move => gameBoard.player1.moves.includes(move))) {
                 gameBoard.player1.winner = true;
-                console.log('plyaer 1 wins');
-            }
+            };
             if (condition.every(move => gameBoard.player2.moves.includes(move))) {
                 gameBoard.player2.winner = true;
-                console.log('player 2 wins');
+            };
+            if (condition.every(move => gameBoard.computer.moves.includes(move))) {
+                gameBoard.computer.winner = true;
             }
-        })
-    }
+        });
+    };
 
     const checkGameEnd = () => {
-        if (gameBoard.player1.winner || gameBoard.player2.winner || gameBoard.draw) {
+        if (gameBoard.player1.winner || gameBoard.player2.winner || gameBoard.computer.winner || gameBoard.draw) {
             gameBoard.endGame = true;
         };
     };
@@ -108,6 +139,7 @@ const game = (() => {
     const play = (chosenBox) => {
         if (!gameBoard.endGame) {
             markBox(chosenBox);
+            countMoves();
             checkWinner();
             checkGameEnd();
             checkDraw();
@@ -118,7 +150,7 @@ const game = (() => {
         gameBoard.player1Turn = true;
         gameBoard.endGame = false;
         gameBoard.moveCounter = 0;
-        gameBoard. draw = false;
+        gameBoard.draw = false;
         gameBoard.resetPlayers();
         gameBoard.boxContent.fill('');
     };
@@ -204,7 +236,9 @@ const gameUI = (() => {
                 status.textContent = `${p1name} is the winner`;
             } else if (gameBoard.player2.winner) {
                 status.textContent = `${p2name} is the winner`;
-            }
+            } else if (gameBoard.computer.winner) {
+                status.textContent = `The Computer is the winner`;
+            };
             return;
         };
 
