@@ -262,12 +262,12 @@ const gameUI = (() => {
         const computerPanel = document.querySelector('.computer')
         if (gameBoard.playVsComputer === false) {
             switchModeBtn.textContent = 'Play vs Computer';
-            player2panel.style.display = 'block';
-            computerPanel.style.display = 'none';
+            player2panel.style.visibility = 'visible';
+            computerPanel.style.visibility = 'hidden';
         } else {
             switchModeBtn.textContent = 'Play 1 vs 1';
-            player2panel.style.display = 'none';
-            computerPanel.style.display = 'block';
+            player2panel.style.visibility = 'hidden';
+            computerPanel.style.visibility = 'visible';
         };
     };
 
