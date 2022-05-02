@@ -67,6 +67,8 @@ const gameBoard = (() => {
 const game = (() => {
     const modeSwitch = () => {
         gameBoard.playVsComputer = !gameBoard.playVsComputer;
+        //on mode swtich reset everything and start a new game
+        newGame();
     };
 
     const markBox = chosenBox => {
