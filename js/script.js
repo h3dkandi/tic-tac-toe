@@ -252,7 +252,7 @@ const gameUI = (() => {
         if (gameBoard.player1Turn) {
             status.textContent = `${p1name}'s turn.`;
         } else {
-            status.textContent = `${p2name}'s turn`;
+            status.textContent = `${p2name}'s turn.`;
         };
     };
 
