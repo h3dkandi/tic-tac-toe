@@ -87,11 +87,11 @@ button.mode {
 }
 
 .box.r {
-    border-right: 0.2rem solid orange;
+    border-right: 0.2rem solid var(--orange);
 }
 
 .box.b {
-    border-bottom: 0.2rem solid orange;
+    border-bottom: 0.2rem solid var(--orange);
 }
 
 /*--- PLAYERS STYLES ---*/
