@@ -158,3 +158,16 @@ button.new-game {
 button.new-game:hover {
     box-shadow: var(--box-shadow);
 }
+
+/* --- FOOTER ---*/
+footer {
+    position: sticky;
+    top: 100vh;
+    text-align: center;
+    padding: 1.3rem;
+}
+
+footer a {
+    color: var(--orange);
+    text-decoration: none;
+}
