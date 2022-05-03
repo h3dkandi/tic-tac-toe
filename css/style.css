@@ -63,6 +63,7 @@ button.mode {
     border-radius: 5px;
     display: flex;
     justify-content: center;
+    word-break: break-all;
 }
 
 .gameBoard {
