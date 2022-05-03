@@ -64,6 +64,7 @@ button.mode {
     display: flex;
     justify-content: center;
     word-break: break-all;
+    user-select: none;
 }
 
 .gameBoard {
