@@ -24,7 +24,7 @@ body {
 }
 
 header {
-    margin: 1rem;
+    margin: 1.3rem;
     text-align: center;
 }
 
@@ -38,7 +38,7 @@ header {
     'game-status game-status game-status'
     'left-side gameboard right-side'
     'left-side game-controls right-side';
-    gap: 1rem;
+    gap: 1.3rem;
 }
 
 .game-mode {
@@ -57,6 +57,10 @@ button.mode {
 
 .game-status {
     grid-area: game-status;
+    padding: 1rem;
+    width: 21rem;
+    border: 1px solid var(--orange);
+    border-radius: 5px;
     display: flex;
     justify-content: center;
 }
@@ -76,6 +80,7 @@ button.mode {
     height: 7rem;
     user-select: none;
     cursor: pointer;
+    font-size: 3rem;
 }
 
 .box.r {
