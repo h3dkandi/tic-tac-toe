@@ -11,10 +11,11 @@ const PlayerFactory = (name, marker) => {
 };
 
 const gameBoard = (() => {
+    const EMPTY_FIELD = '';
     const boxContent = [
-        '', '', '',
-        '', '', '',
-        '', '', ''
+        EMPTY_FIELD, EMPTY_FIELD, EMPTY_FIELD,
+        EMPTY_FIELD, EMPTY_FIELD, EMPTY_FIELD,
+        EMPTY_FIELD, EMPTY_FIELD, EMPTY_FIELD
     ];
 
     const winConditions = [
@@ -34,10 +35,9 @@ const gameBoard = (() => {
 
     let playVsComputer = false;
     let player1Turn = true;
-    let endGame = false;
+
     let moveCounter = 0;
     const totalMoves = 9;
-    let draw = false;
 
     const resetPlayers = () => {
         player1.moves = [];
@@ -57,10 +57,9 @@ const gameBoard = (() => {
         playVsComputer,
         player1Turn,
         moveCounter,
-        draw,
-        endGame,
         totalMoves,
-        resetPlayers
+        resetPlayers,
+        EMPTY_FIELD
     };
 })();
 
@@ -73,7 +72,7 @@ const game = (() => {
 
     const markBox = chosenBox => {
         //prevent the player from choosing an already marked box
-        if (gameBoard.boxContent[chosenBox] !== '') {
+        if (gameBoard.boxContent[chosenBox] !== gameBoard.EMPTY_FIELD) {
             return;
         }
 
@@ -94,18 +93,10 @@ const game = (() => {
         }
     };
 
-    const countMoves = () => {
-        if (!gameBoard.playVsComputer) {
-            gameBoard.moveCounter = gameBoard.player1.moves.length + gameBoard.player2.moves.length;
-        } else {
-            gameBoard.moveCounter = gameBoard.player1.moves.length + gameBoard.computer.moves.length;
-        };
-    };
-
     const computerMarkBox = () => {
         let freeBoxes = [];
         gameBoard.boxContent.forEach((box, index) => {
-            if (box === '') {
+            if (box === gameBoard.EMPTY_FIELD) {
                 freeBoxes.push(index);
             };
         });
@@ -114,51 +105,51 @@ const game = (() => {
         return computerChoice.toString();
     };
 
-    const checkDraw = () => {
-        //if all available moves are made and there is still no winner game is draw
-        if (gameBoard.moveCounter === gameBoard.totalMoves && (!gameBoard.player1.winner && !gameBoard.player2.winner && !gameBoard.computer.winner)) {
-            gameBoard.draw = true;
-            gameBoard.endGame = true;
-        };
+    const hasAvailableMoves = () => {
+        return gameBoard.boxContent.includes(gameBoard.EMPTY_FIELD);
     };
 
     const checkWinner = () => {
+        let winner;
         gameBoard.winConditions.forEach(condition => {
             if (condition.every(move => gameBoard.player1.moves.includes(move))) {
                 gameBoard.player1.winner = true;
+                winner = gameBoard.player1;
             };
             if (condition.every(move => gameBoard.player2.moves.includes(move))) {
                 gameBoard.player2.winner = true;
+                winner = gameBoard.player2
             };
             if (condition.every(move => gameBoard.computer.moves.includes(move))) {
                 gameBoard.computer.winner = true;
+                winner = gameBoard.computer
             }
         });
+
+        return winner;
     };
 
-    const checkGameEnd = () => {
-        if (gameBoard.player1.winner || gameBoard.player2.winner || gameBoard.computer.winner || gameBoard.draw) {
-            gameBoard.endGame = true;
-        };
+    const hasGameEnded = () => {
+        if (checkWinner() || !hasAvailableMoves()) {
+            return true;
+        }
+
+        return false;
     };
 
     const play = (chosenBox) => {
-        if (!gameBoard.endGame) {
-            markBox(chosenBox);
-            countMoves();
-            checkWinner();
-            checkGameEnd();
-            checkDraw();
-        };
+        if (hasGameEnded()) {
+            return;
+        }
+
+        markBox(chosenBox);
     };
 
     const resetGameboard = () => {
         gameBoard.player1Turn = true;
-        gameBoard.endGame = false;
         gameBoard.moveCounter = 0;
-        gameBoard.draw = false;
         gameBoard.resetPlayers();
-        gameBoard.boxContent.fill('');
+        gameBoard.boxContent.fill(gameBoard.EMPTY_FIELD);
     };
 
     const newGame = () => {
@@ -169,15 +160,17 @@ const game = (() => {
     return {
         play,
         modeSwitch,
+        hasGameEnded,
+        checkWinner,
         newGame //call this function on the html element button onclick
     };
 })();
 
-const gameUI = (() => {
+const gameUI = ((gameModule) => {
     const initMarkBoxes = (gameBoardContainer) => {
         gameBoardContainer.addEventListener('click', (e) => {
             let chosenBox = e.target.id;
-            game.play(chosenBox);
+            gameModule.play(chosenBox);
             populateGameBoard();
         });
     };
@@ -185,7 +178,7 @@ const gameUI = (() => {
     const populateGameBoard = () => {
         const boxes = document.querySelectorAll('.box');
         gameBoard.boxContent.forEach((markedBox, index) => {
-            if (markedBox !== '') {
+            if (markedBox !== gameBoard.EMPTY_FIELD) {
                 boxes[index].textContent = markedBox;
             };
         });
@@ -198,7 +191,7 @@ const gameUI = (() => {
 
         const boxes = document.querySelectorAll('.box');
         boxes.forEach(box => {
-            box.textContent = '';
+            box.textContent = gameBoard.EMPTY_FIELD;
         });
     };
 
@@ -236,8 +229,8 @@ const gameUI = (() => {
         const p1name = gameBoard.player1.name;
         const p2name = gameBoard.player2.name;
         const status = document.querySelector('.game-status');
-        if (gameBoard.endGame) {
-            if (gameBoard.draw) {
+        if (gameModule.hasGameEnded()) {
+            if (!gameModule.checkWinner()) {
                 status.textContent = 'Game is Draw';
             } else if (gameBoard.player1.winner) {
                 status.textContent = `${p1name} is the winner`;
@@ -281,7 +274,7 @@ const gameUI = (() => {
         resetGameBoardUI,
         switchUImode
     }
-})();
+})(game);
 
 function init() {
     const gameBoardContainer = document.querySelector('.gameBoard');
